@@ -28,22 +28,34 @@ graph=graph_builder.compile()
 import streamlit as st  
 if 'prompt' not in st.session_state:
     st.session_state.prompt=""
+if 'conversation_history' not in st.session_state:
+    st.session_state.conversation_history=[]
 def clear_prompt():
-    st.session_state.prompt=""    
+    st.session_state.prompt=""
+    
+def reset_conversation():
+    st.session_state.prompt=""
+    st.session_state.conversation_history=[]    
+
 st.title("Chatbot")
 st.text_area("Enter your prompt:",height=150,key="prompt")
-col1,col2=st.columns(2)
+col1,col2,col3=st.columns(3)
 
 response_container=st.container()
 with col1:
     if st.button("Submit"):
         if st.session_state.prompt:
+            st.session_state.conversation_history.append({"role":"user","content":st.session_state.prompt})
             with st.spinner("Processing..."):
                 with response_container:
-                    for event in graph.stream({'messages':("user",st.session_state.prompt)}):
+                    for event in graph.stream({'messages':st.session_state.conversation_history}):
                         for(value) in event.values():
                             response=value['messages'].content
+                            st.session_state.conversation_history.append({"role":"assistant","content":response})
                             st.write(f"Assistent: {response}")
 with col2:
     if st.button("Clear",on_click=clear_prompt):
-        pass            
+        pass    
+with col3:
+    if st.button("Reset",on_click=reset_conversation):
+        pass
