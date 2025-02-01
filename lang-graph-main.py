@@ -27,12 +27,12 @@ graph=graph_builder.compile()
 
 import streamlit as st  
 st.title("Chatbot")
-prompt=st.text_area("Enter your prompt:",height=150)
+st.text_area("Enter your prompt:",height=150,key="prompt")
 col1,col2=st.columns(2)
 
 with col1:
     if st.button("Submit"):
-        if prompt:
+        if st.session_state.prompt:
             with st.spinner("Processing..."):
                 for event in graph.stream({'messages':("user",prompt)}):
                     for(value) in event.values():
@@ -40,4 +40,4 @@ with col1:
                         st.write(f"Assistent: {response}")
 with col2:
     if st.button("Clear"):
-        st.text_area("Enter your prompt:",value="",height=150)             
+        st.session_state.prompt=""            
