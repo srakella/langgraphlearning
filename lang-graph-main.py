@@ -41,7 +41,6 @@ def reset_conversation():
 
 st.title("Chatbot")
 st.text_area("Enter your prompt:",height=150,key="prompt")
-st.session_state.show_things=st.checkbox("Show things")
 col1,col2,col3=st.columns(3)
 
 response_container=st.container()
