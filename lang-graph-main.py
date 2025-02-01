@@ -24,7 +24,7 @@ graph_builder.add_node("chatbot", chatbot)
 graph_builder.add_edge(START, "chatbot")
 graph_builder.add_edge("chatbot", END)    
 graph=graph_builder.compile()
-
+import re
 import streamlit as st  
 if 'prompt' not in st.session_state:
     st.session_state.prompt=""
@@ -53,8 +53,9 @@ with col1:
                     for event in graph.stream({'messages':st.session_state.conversation_history}):
                         for(value) in event.values():
                             response=value['messages'].content
+                            clean_response=re.sub(r'<[^>]*>', '', response)
                             st.session_state.conversation_history.append({"role":"assistant","content":response})
-                            st.write(f"Assistent: {response}")
+                            st.write(f"Assistent: {clean_response}")
 with col2:
     if st.button("Clear",on_click=clear_prompt):
         pass    
