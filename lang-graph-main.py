@@ -41,6 +41,7 @@ def reset_conversation():
 
 st.title("Chatbot")
 st.text_area("Enter your prompt:",height=150,key="prompt")
+st.session_state.show_things=st.checkbox("Show things")
 col1,col2,col3=st.columns(3)
 
 response_container=st.container()
@@ -53,9 +54,8 @@ with col1:
                     for event in graph.stream({'messages':st.session_state.conversation_history}):
                         for(value) in event.values():
                             response=value['messages'].content
-                            clean_response=re.sub(r'<[^>]*>', '', response)
                             st.session_state.conversation_history.append({"role":"assistant","content":response})
-                            st.write(f"Assistent: {clean_response}")
+                            st.write(f"Assistent: {response}")
 with col2:
     if st.button("Clear",on_click=clear_prompt):
         pass    
