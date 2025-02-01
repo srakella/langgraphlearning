@@ -30,8 +30,7 @@ if 'prompt' not in st.session_state:
     st.session_state.prompt=""
 if 'conversation_history' not in st.session_state:
     st.session_state.conversation_history=[]
-if 'show_thinking' not in st.session_state:
-    st.session_state.show_thinking=False
+
 
 def clear_prompt():
     st.session_state.prompt=""
@@ -42,7 +41,7 @@ def reset_conversation():
 
 st.title("Chatbot")
 st.text_area("Enter your prompt:",height=150,key="prompt")
-st.session_state.show_thinking=st.checkbox("Show thinking",value=st.session_state.show_thinking)
+st.session_state.show_thinking=False
 col1,col2,col3=st.columns(3)
 
 response_container=st.container()
@@ -57,8 +56,6 @@ with col1:
                             response=value['messages'].content
                             st.session_state.conversation_history.append({"role":"assistant","content":response})
                             st.write(f"Assistent: {response}")
-                            if st.session_state.show_thinking:
-                                st.write(f"Thinking...{value}")
 with col2:
     if st.button("Clear",on_click=clear_prompt):
         pass    
