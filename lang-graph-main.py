@@ -26,6 +26,10 @@ graph_builder.add_edge("chatbot", END)
 graph=graph_builder.compile()
 
 import streamlit as st  
+if 'prompt' not in st.session_state:
+    st.session_state.prompt=""
+def clear_prompt():
+    st.session_state.prompt=""    
 st.title("Chatbot")
 st.text_area("Enter your prompt:",height=150,key="prompt")
 col1,col2=st.columns(2)
@@ -39,5 +43,5 @@ with col1:
                         response=value['messages'].content
                         st.write(f"Assistent: {response}")
 with col2:
-    if st.button("Clear"):
-        st.session_state.prompt=""            
+    if st.button("Clear",on_click=clear_prompt):
+        pass            
