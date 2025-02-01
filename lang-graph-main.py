@@ -27,7 +27,7 @@ graph=graph_builder.compile()
 
 import streamlit as st  
 st.title("Chatbot")
-prompt=st.text_area("Enter your prompt:",height=200)
+prompt=st.text_area("Enter your prompt:",height=150)
 if st.button("Submit"):
     if prompt:
         with st.spinner("Processing..."):
@@ -35,5 +35,5 @@ if st.button("Submit"):
                 for(value) in event.values():
                     response=value['messages'].content
                     st.write(f"Assistent: {response}")
-    else:
-        st.warning("Please enter a prompt")                
+if st.button("Clear"):
+    st.text_area("Enter your prompt:",value="",height=150)             
