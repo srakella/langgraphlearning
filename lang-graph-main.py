@@ -34,14 +34,16 @@ st.title("Chatbot")
 st.text_area("Enter your prompt:",height=150,key="prompt")
 col1,col2=st.columns(2)
 
+response_container=st.container()
 with col1:
     if st.button("Submit"):
         if st.session_state.prompt:
             with st.spinner("Processing..."):
-                for event in graph.stream({'messages':("user",st.session_state.prompt)}):
-                    for(value) in event.values():
-                        response=value['messages'].content
-                        st.write(f"Assistent: {response}")
+                with response_container:
+                    for event in graph.stream({'messages':("user",st.session_state.prompt)}):
+                        for(value) in event.values():
+                            response=value['messages'].content
+                            st.write(f"Assistent: {response}")
 with col2:
     if st.button("Clear",on_click=clear_prompt):
         pass            
