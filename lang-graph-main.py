@@ -42,7 +42,7 @@ def reset_conversation():
 
 st.title("Chatbot")
 st.text_area("Enter your prompt:",height=150,key="prompt")
-st.session_state.show_thinking=st.checkbox("Show thinking")
+st.session_state.show_thinking=st.checkbox("Show thinking",value=st.session_state.show_thinking)
 col1,col2,col3=st.columns(3)
 
 response_container=st.container()
