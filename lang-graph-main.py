@@ -34,7 +34,7 @@ with col1:
     if st.button("Submit"):
         if st.session_state.prompt:
             with st.spinner("Processing..."):
-                for event in graph.stream({'messages':("user",prompt)}):
+                for event in graph.stream({'messages':("user",st.session_state.prompt)}):
                     for(value) in event.values():
                         response=value['messages'].content
                         st.write(f"Assistent: {response}")
