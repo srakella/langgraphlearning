@@ -16,6 +16,7 @@ project_context = {
     ]
 }
 
+
 # You can also add a function to modify the project context if needed:
 def update_project_context(new_data):
     project_context.update(new_data)
