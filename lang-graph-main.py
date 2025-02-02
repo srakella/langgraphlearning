@@ -3,6 +3,9 @@
 groq_api_key="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"
 
 langsmith_api_key="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"
+
+openai_api_key="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"
+
 import os
 os.environ['GROQ_API_KEY'] = groq_api_key
 os.environ['LANGSMITH_API_KEY'] = langsmith_api_key
@@ -26,6 +29,8 @@ graph_builder.add_edge("chatbot", END)
 graph=graph_builder.compile()
 import re
 import streamlit as st  
+from llm_agent import ProjectAssignmentAgent
+from project_data import project_context
 if 'prompt' not in st.session_state:
     st.session_state.prompt=""
 if 'conversation_history' not in st.session_state:
@@ -48,13 +53,19 @@ with col1:
     if st.button("Submit"):
         if st.session_state.prompt:
             st.session_state.conversation_history.append({"role":"user","content":st.session_state.prompt})
-            with st.spinner("Processing..."):
-                with response_container:
-                    for event in graph.stream({'messages':st.session_state.conversation_history}):
-                        for(value) in event.values():
-                            response=value['messages'].content
-                            st.session_state.conversation_history.append({"role":"assistant","content":response})
-                            st.write(f"Assistent: {response}")
+            if re.search(r"(create|new|add)\s+(task|issue|ticket)", user_input, re.IGNORECASE) or re.search(r"assign\s+.*to", user_input, re.IGNORECASE) or re.search(r"jira\s+task", user_input, re.IGNORECASE): # More patterns as needed
+                with st.spinner("Processing..."):
+                    project_agent = ProjectAssignmentAgent(openai_api_key, project_context)
+                    agent_response = project_agent.process_prompt(st.session_state.prompt)
+                    st.write(agent_response["agent_response"])
+            else:    
+                with st.spinner("Processing..."):
+                    with response_container:
+                        for event in graph.stream({'messages':st.session_state.conversation_history}):
+                            for(value) in event.values():
+                                response=value['messages'].content
+                                st.session_state.conversation_history.append({"role":"assistant","content":response})
+                                st.write(f"Assistent: {response}")
 with col2:
     if st.button("Clear",on_click=clear_prompt):
         pass    
