@@ -57,7 +57,8 @@ with col1:
             if re.search(r"(create|new|add)\s+(task|issue|ticket)", user_input, re.IGNORECASE) or re.search(r"assign\s+.*to", user_input, re.IGNORECASE) or re.search(r"jira\s+task", user_input, re.IGNORECASE): # More patterns as needed
                 with st.spinner("Processing..."):
                     project_agent = ProjectAssignmentAgent(openai_api_key, project_context)
-                    agent_response = project_agent.process_prompt(st.session_state.prompt)
+                    agent_response = "this is testing"
+                    #agent_response = project_agent.process_prompt(user_input)
                     st.write(agent_response["agent_response"])
             else:    
                 with st.spinner("Processing..."):
