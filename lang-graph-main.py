@@ -53,6 +53,7 @@ with col1:
     if st.button("Submit"):
         if st.session_state.prompt:
             st.session_state.conversation_history.append({"role":"user","content":st.session_state.prompt})
+            user_input=st.session_state.prompt
             if re.search(r"(create|new|add)\s+(task|issue|ticket)", user_input, re.IGNORECASE) or re.search(r"assign\s+.*to", user_input, re.IGNORECASE) or re.search(r"jira\s+task", user_input, re.IGNORECASE): # More patterns as needed
                 with st.spinner("Processing..."):
                     project_agent = ProjectAssignmentAgent(openai_api_key, project_context)
