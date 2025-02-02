@@ -59,7 +59,7 @@ with col1:
                     project_agent = ProjectAssignmentAgent(openai_api_key, project_context)
                     agent_response = "this is testing"
                     #agent_response = project_agent.process_prompt(user_input)
-                    st.write(agent_response["agent_response"])
+                    st.write(f"Assistent: {agent_response}")
             else:    
                 with st.spinner("Processing..."):
                     with response_container:
