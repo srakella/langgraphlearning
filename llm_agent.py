@@ -50,7 +50,7 @@ class ProjectAssignmentAgent:
         ```
         """  # End of the prompt string
         try:
-            response = openai.ChatCompletion.create(
+            response = openai.chat.completions.create(
                 model="gpt-3.5-turbo",  # Or gpt-4
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=2048,  # Adjust as needed
