@@ -51,8 +51,9 @@ class ProjectAssignmentAgent:
         """  # End of the prompt string
         try:
             response = openai.chat.completions.create(
-                model="gpt-3.5-turbo",  # Or gpt-4
-                messages=[{"role": "user", "content": prompt}],
+                model="gpt-4.0-mini",  # Or gpt-4
+                messages=[{"role": "user", "content": "You are a project assignment agent.  Your task is to help manage project tasks."}],
+                #messages=[{"role": "user", "content": prompt}],
                 max_tokens=2048,  # Adjust as needed
                 temperature=1.00,  # Adjust as needed
             )
