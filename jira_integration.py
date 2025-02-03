@@ -6,7 +6,7 @@ class JiraIntegrator:
         # Set environment variables
         os.environ['JIRA_SERVER'] = 'https://srakella19.atlassian.net/'
         os.environ['JIRA_USERNAME'] = 'srakella19@gmail.com'
-        os.environ['JIRA_API_TOKEN'] = 'ATATT3xFfGF0nj2NmIWsN8raUOzCozZMqZds8QNgAbbXNHRnA-tZgdDP6VWOUGx3EbXaokCRykNxFuSd2f1Hff4hZpJF8iKUBioi7grG7dos1CnSgT5nUrPrp9kTYL8u8PznhVprGdhBrHl-23jpjW5xw9wTdOuU9JEMKX4j9Uj2ar3G6CXteDA=CD1B2336'
+        os.environ['JIRA_API_TOKEN'] = 'ATATT3xFfGF0oDcax8Fzkc8_06AE0Pzf54S3m_7g0q0ntNdYHRWiJ6tY8yeLAca_OFNdl9_B2TcroFEnT-9aw9MhmCKxwftqh7uLGYM4vV0vbkd4C2AYRcpg79bS1Jsa5LwXcARMGMtKVDltpcYdDzuf3bu16sehMhq-WEpHxtUvfBg5F--dYR0=BD7D5C1E'
 
         # Get environment variables
         self.JIRA_SERVER = os.getenv('JIRA_SERVER')
@@ -28,6 +28,7 @@ class JiraIntegrator:
 
 
     def create_task(self, summary, project_key, assignee=None, description=None):
+        
         try:
             fields = {
                 'project': {'key': project_key},
@@ -43,7 +44,7 @@ class JiraIntegrator:
         
             if description:
                 fields['description'] = description
-
+            
             new_task = self.jira.create_issue(fields=fields)
             return new_task.key  # Return the key of the created task
 
