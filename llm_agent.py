@@ -20,7 +20,7 @@ class ProjectAssignmentAgent:
                     Consider the following project context:
 
                     ```json
-                    {json.dumps(project_context, indent=2)}
+                    {json.dumps(self.project_context, indent=2)}
                     ```
 
                     User request: {user_prompt}
