@@ -1,13 +1,13 @@
 import os
 from jira import JIRA
+from hcp_vault_helper import HCPVaultHelper
 
 class JiraIntegrator:
     def __init__(self):
         # Set environment variables
         os.environ['JIRA_SERVER'] = 'https://srakella19.atlassian.net/'
         os.environ['JIRA_USERNAME'] = 'srakella19@gmail.com'
-        os.environ['JIRA_API_TOKEN'] = 'ATATT3xFfGF0oDcax8Fzkc8_06AE0Pzf54S3m_7g0q0ntNdYHRWiJ6tY8yeLAca_OFNdl9_B2TcroFEnT-9aw9MhmCKxwftqh7uLGYM4vV0vbkd4C2AYRcpg79bS1Jsa5LwXcARMGMtKVDltpcYdDzuf3bu16sehMhq-WEpHxtUvfBg5F--dYR0=BD7D5C1E'
-
+        os.environ['JIRA_API_TOKEN'] = HCPVaultHelper.get_api_token()
         # Get environment variables
         self.JIRA_SERVER = os.getenv('JIRA_SERVER')
         self.JIRA_USERNAME = os.getenv('JIRA_USERNAME')
