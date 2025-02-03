@@ -2,10 +2,9 @@ from jira_integration import JiraIntegrator
 import json
 from groq import Groq
 class ProjectAssignmentAgent:
-    def __init__(self, project_context=None):
+    def __init__(self, groq_api_key,project_context=None):
         self.project_context = project_context or {}
         self.jira_integrator = JiraIntegrator()  # Initialize JiraIntegrator
-        groq_api_key="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"
         self.llm=Groq(api_key=groq_api_key)
         
     def generate_prompt(self, user_prompt):

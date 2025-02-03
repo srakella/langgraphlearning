@@ -55,7 +55,7 @@ with col1:
             user_input=st.session_state.prompt
             if re.search(r"(create|new|add)\s+(task|issue|ticket)", user_input, re.IGNORECASE) or re.search(r"assign\s+.*to", user_input, re.IGNORECASE) or re.search(r"jira\s+task", user_input, re.IGNORECASE): # More patterns as needed
                 with st.spinner("Processing..."):
-                    project_agent = ProjectAssignmentAgent(project_context)
+                    project_agent = ProjectAssignmentAgent(groq_api_key,project_context)
                     #agent_response = user_input
                     agent_response = project_agent.process_prompt(user_input)
                     st.write(f"Assistent: {agent_response}")
