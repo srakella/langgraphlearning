@@ -11,8 +11,6 @@ project_context = {
         "end_date": "2024-03-31"
     },
     "existing_tasks": [
-        {"summary": "Implement user authentication", "assignee": "Alice Smith", "status": "In Progress"},
-        {"summary": "Create unit tests", "assignee": "Bob Johnson", "status": "To Do"}
     ]
 }
 
