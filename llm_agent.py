@@ -1,10 +1,8 @@
 from jira_integration import JiraIntegrator
-import openai
 import json
 from langchain_groq import ChatGroq
 class ProjectAssignmentAgent:
-    def __init__(self, openai_api_key, project_context=None):
-        openai.api_key = openai_api_key
+    def __init__(self, project_context=None):
         self.project_context = project_context or {}
         self.jira_integrator = JiraIntegrator()  # Initialize JiraIntegrator
         groq_api_key="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"
@@ -53,7 +51,7 @@ class ProjectAssignmentAgent:
         ```
         """  # End of the prompt string
         try:
-            response = self.llm.invoke([{"role": "user", "content": prompt}])
+            response = self.llm.invoke([{"role": "user", "content": "create a new task"}])  # Invoke the LLM with the user prompt
             print(response)
             agent_response_json = json.loads(response.choices.message.content)
             if agent_response_json.get("action_required", False): # Check if action_required is True

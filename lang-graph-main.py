@@ -4,7 +4,6 @@ groq_api_key="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"
 
 langsmith_api_key="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"
 
-openai_api_key="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"
 
 import os
 os.environ['GROQ_API_KEY'] = groq_api_key
@@ -56,7 +55,7 @@ with col1:
             user_input=st.session_state.prompt
             if re.search(r"(create|new|add)\s+(task|issue|ticket)", user_input, re.IGNORECASE) or re.search(r"assign\s+.*to", user_input, re.IGNORECASE) or re.search(r"jira\s+task", user_input, re.IGNORECASE): # More patterns as needed
                 with st.spinner("Processing..."):
-                    project_agent = ProjectAssignmentAgent(openai_api_key, project_context)
+                    project_agent = ProjectAssignmentAgent(project_context)
                     #agent_response = user_input
                     agent_response = project_agent.process_prompt(user_input)
                     st.write(f"Assistent: {agent_response}")
