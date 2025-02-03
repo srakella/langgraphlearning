@@ -1,12 +1,15 @@
 from jira_integration import JiraIntegrator
 import openai
 import json
-
+from langchain_groq import ChatGroq
 class ProjectAssignmentAgent:
     def __init__(self, openai_api_key, project_context=None):
         openai.api_key = openai_api_key
         self.project_context = project_context or {}
         self.jira_integrator = JiraIntegrator()  # Initialize JiraIntegrator
+        groq_api_key="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"
+        self.llm=ChatGroq(groq_api_key=groq_api_key, model_name="deepseek-r1-distill-llama-70b")
+
 
     def process_prompt(self, user_prompt):
         prompt = f"""
@@ -50,13 +53,8 @@ class ProjectAssignmentAgent:
         ```
         """  # End of the prompt string
         try:
-            response = openai.chat.completions.create(
-                model="gpt-4.0-mini",  # Or gpt-4
-                messages=[{"role": "user", "content": "You are a project assignment agent.  Your task is to help manage project tasks."}],
-                #messages=[{"role": "user", "content": prompt}],
-                max_tokens=2048,  # Adjust as needed
-                temperature=1.00,  # Adjust as needed
-            )
+            response = self.llm.invoke([{"role": "user", "content": prompt}])
+            print(response)
             agent_response_json = json.loads(response.choices.message.content)
             if agent_response_json.get("action_required", False): # Check if action_required is True
                 action_details = agent_response_json.get("action_details", {}) # Access action_details safely
