@@ -1,12 +1,13 @@
 from jira_integration import JiraIntegrator
 import json
-from langchain_groq import ChatGroq
+from groq import Groq
 class ProjectAssignmentAgent:
     def __init__(self, project_context=None):
         self.project_context = project_context or {}
         self.jira_integrator = JiraIntegrator()  # Initialize JiraIntegrator
         groq_api_key="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"
-        self.llm=ChatGroq(groq_api_key=groq_api_key, model_name="deepseek-r1-distill-llama-70b")
+        self.llm=Groq(groq_api_key=groq_api_key, model_name="deepseek-r1-distill-llama-70b")
+        self.llm.response_format = "json"  # Set response format to JSON
 
 
     def process_prompt(self, user_prompt):
@@ -35,7 +36,6 @@ class ProjectAssignmentAgent:
           "action_details": {{
             "task_summary": "Implement login functionality",
             "assignee": "Alice",
-            "due_date": "2024-03-15",  # YYYY-MM-DD format
             "description": "Implement user authentication using OAuth 2.0"
           }}
         }}
@@ -51,7 +51,7 @@ class ProjectAssignmentAgent:
         ```
         """  # End of the prompt string
         try:
-            response = self.llm.invoke([{"role": "user", "content": "create a new task"}])  # Invoke the LLM with the user prompt
+            response = self.llm.invoke([{"role": "user", "content": prompt}])  # Invoke the LLM with the user prompt
             print(response)
             agent_response_json = json.loads(response.choices.message.content)
             if agent_response_json.get("action_required", False): # Check if action_required is True
