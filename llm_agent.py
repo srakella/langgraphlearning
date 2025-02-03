@@ -63,7 +63,7 @@ class ProjectAssignmentAgent:
             response = self.llm.chat.completions.create(model="deepseek-r1-distill-llama-70b",messages=prompt,response_format={"type": "json_object"},stream=False)
             
             agent_response_json = json.loads(response.choices[0].message.content)  # Parse the JSON response
-            if agent_response_json.get("action_required", False): # Check if action_required is True
+            if agent_response_json.get("action_required", True): # Check if action_required is True
                 action_details = agent_response_json.get("action_details", {}) # Access action_details safely
 
                 if "task_summary" in action_details:
