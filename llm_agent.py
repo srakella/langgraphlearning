@@ -76,7 +76,7 @@ class ProjectAssignmentAgent:
                         )
                         if new_task_key:
                             agent_response_json["jira_task_key"] = new_task_key # Add task key to the response
-                            agent_response_json["agent_response"] = f"\nJira task created: {new_task_key}"  # Update agent's response
+                            agent_response_json["agent_response"] += f"\nJira task created: {new_task_key}"  # Update agent's response
                         else:
                             agent_response_json["agent_response"] += "\nFailed to create Jira task."
 
@@ -90,3 +90,6 @@ class ProjectAssignmentAgent:
                 "agent_response": "Error: Could not parse LLM response.",
                 "action_required": False,
             }
+    def generate_user_response(self, agent_response_json):
+        response = self.llm.chat.completions.create(model="deepseek-r1-distill-llama-70b",messages=agent_response_json,stream=False)
+        return response.choices[0].message.content
