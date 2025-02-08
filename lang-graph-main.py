@@ -5,6 +5,7 @@ groq_api_key="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"
 langsmith_api_key="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"
 
 
+import json
 import os
 os.environ['GROQ_API_KEY'] = groq_api_key
 os.environ['LANGSMITH_API_KEY'] = langsmith_api_key
@@ -43,6 +44,36 @@ def reset_conversation():
     st.session_state.prompt=""
     st.session_state.conversation_history=[]    
 
+def format_agent_response(agent_response_json):
+    """Formats a JSON agent response for display in Streamlit."""
+
+    try:
+        agent_response = json.loads(agent_response_json)  # Parse the JSON string
+    except json.JSONDecodeError:
+        return "Invalid JSON response from agent."  # Handle parsing errors
+
+    formatted_output = ""
+
+    if isinstance(agent_response, dict):  # Handle dictionary-based JSON
+        for key, value in agent_response.items():
+            formatted_output += f"**{key}:** {value}\n\n"  # Bold keys, add newlines
+    elif isinstance(agent_response, list):  # Handle list-based JSON
+        formatted_output += "<ul>"  # Start an unordered list
+        for item in agent_response:
+            if isinstance(item, dict):
+                formatted_output += "<li>" # Start a list item
+                for key, value in item.items():
+                    formatted_output += f"<strong>{key}:</strong> {value}<br>"
+                formatted_output += "</li>" # Close a list item
+            else:
+                formatted_output += f"<li>{item}</li>"  # Simple list items
+        formatted_output += "</ul>"  # Close the unordered list
+
+    else:
+        formatted_output = str(agent_response)  # Default to string conversion
+
+    return formatted_output
+
 st.title("Chatbot")
 st.text_area("Enter your prompt:",height=150,key="prompt")
 col1,col2,col3=st.columns(3)
@@ -58,8 +89,10 @@ with col1:
                     project_agent = ProjectAssignmentAgent(groq_api_key,project_context)
                     #agent_response = user_input
                     agent_response = project_agent.process_prompt(user_input)
+                    formatted_response = format_agent_response(agent_response) # Format the response
+                    st.markdown(formatted_response, unsafe_allow_html=True) # Display the formatted response.
                    
-                    st.write(f"Assistant: {agent_response}")
+                    #st.write(f"Assistant: {agent_response}")
             else:    
                 with st.spinner("Processing..."):
                     with response_container:
@@ -74,3 +107,4 @@ with col2:
 with col3:
     if st.button("Reset",on_click=reset_conversation):
         pass
+
