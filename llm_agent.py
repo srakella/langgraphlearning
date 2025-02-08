@@ -82,8 +82,7 @@ class ProjectAssignmentAgent:
 
                     except Exception as e:
                         agent_response_json["agent_response"] += f"\nError creating Jira task: {e}"
-            user_response = self.llm.chat.completions.create(model="deepseek-r1-distill-llama-70b",messages=agent_response_json,stream=False)
-            return user_response.choices[0].message.content  # Return the (possibly updated) JSON response
+            return agent_response_json
 
         except json.JSONDecodeError:
             return {
