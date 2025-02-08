@@ -66,7 +66,7 @@ with col1:
                             for(value) in event.values():
                                 response=value['messages'].content
                                 st.session_state.conversation_history.append({"role":"assistant","content":response})
-                                st.write(f"Assistent: {response}")
+                                st.write(f"Assistant: {response}")
 with col2:
     if st.button("Clear",on_click=clear_prompt):
         pass    

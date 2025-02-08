@@ -76,7 +76,7 @@ class ProjectAssignmentAgent:
                         )
                         if new_task_key:
                             agent_response_json["jira_task_key"] = new_task_key # Add task key to the response
-                            agent_response_json["agent_response"] += f"\nJira task created: {new_task_key}"  # Update agent's response
+                            agent_response_json["agent_response"] = f"\nJira task created: {new_task_key}"  # Update agent's response
                         else:
                             agent_response_json["agent_response"] += "\nFailed to create Jira task."
 
