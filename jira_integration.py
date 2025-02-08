@@ -27,8 +27,7 @@ class JiraIntegrator:
             raise  # Re-raise the exception so calling code knows connection failed
 
 
-    def create_task(self, summary, project_key, assignee=None, description=None):
-        
+    def create_task(self, summary, project_key, assignee=None, description=None):    
         try:
             fields = {
                 'project': {'key': project_key},
@@ -60,32 +59,3 @@ class JiraIntegrator:
         except Exception as e:
             print(f"Error assigning task: {e}")
             return False
-
-
-    # Add more methods for other Jira actions (update_task, get_task, etc.)
-
-# Example usage:
-try:
-    jira_integrator = JiraIntegrator()  # Create an instance of the class
-
-    project_key = "MARS"  # Replace with your project key
-    task_summary = "Implement new feature"
-    assignee = "sravan15462"  # Jira username of the assignee
-    #due_date = "2024-03-15"
-    description = "Detailed description of the new feature..."
-
-    new_task_key = jira_integrator.create_task(task_summary, project_key, assignee, description)
-
-    if new_task_key:
-        print(f"New Jira task created: {new_task_key}")
-
-        # Example of assigning an existing task
-        if jira_integrator.assign_task(new_task_key, assignee):  # Assign to a different user
-            print(f"Task {new_task_key} assigned successfully.")
-        else:
-            print(f"Failed to assign task {new_task_key}.")
-
-except ValueError as e:
-    print(f"Configuration Error: {e}")
-except Exception as e:
-    print(f"A general error occurred: {e}")
