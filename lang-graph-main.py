@@ -44,35 +44,47 @@ def reset_conversation():
     st.session_state.prompt=""
     st.session_state.conversation_history=[]    
 
-def format_agent_response(agent_response):  # No need for agent_response_json
-    """Formats the agent response for display in Streamlit. Handles both JSON strings and Python dictionaries."""
+def format_agent_response(agent_response):
+    """Formats the agent response for display in Streamlit. Handles JSON strings, 
+       Python dictionaries, lists, and other data types, extracting "agent_response" 
+       if present and providing more user-friendly output.
+    """
 
-    if isinstance(agent_response, str): # Check if it is a JSON string
+    if isinstance(agent_response, str):
         try:
-            agent_response = json.loads(agent_response)  # Parse the JSON string
+            agent_response = json.loads(agent_response)
         except json.JSONDecodeError:
-            return "Invalid JSON response from agent."  # Handle parsing errors
-    elif not isinstance(agent_response, dict) and not isinstance(agent_response, list): # If not a dictionary or list, convert to string
-        return str(agent_response) # Default to string conversion
-    #If it is already a dictionary, we skip the json.loads()
+            return "Invalid JSON response from agent."
 
-    formatted_output = ""
+    if isinstance(agent_response, dict):
+        agent_response_text = agent_response.get("agent_response")  # Extract "agent_response"
+        if agent_response_text:
+            agent_response = agent_response_text  # Use extracted text
+        #If agent_response key does not exist, it will format the whole dictionary
 
-    if isinstance(agent_response, dict):  # Handle dictionary-based JSON
+
+    if isinstance(agent_response, dict):  # Format dictionaries
+        formatted_output = ""
         for key, value in agent_response.items():
-            formatted_output += f"**{key}:** {value}\n\n"  # Bold keys, add newlines
-    elif isinstance(agent_response, list):  # Handle list-based JSON
-        formatted_output += "<ul>"  # Start an unordered list
+            formatted_output += f"**{key}:** {value}\n\n"
+        return formatted_output
+    elif isinstance(agent_response, list):  # Format lists
+        formatted_output = "<ul>"
         for item in agent_response:
             if isinstance(item, dict):
-                formatted_output += "<li>"  # Start a list item
+                formatted_output += "<li>"
                 for key, value in item.items():
                     formatted_output += f"<strong>{key}:</strong> {value}<br>"
-                formatted_output += "</li>"  # Close a list item
+                formatted_output += "</li>"
             else:
-                formatted_output += f"<li>{item}</li>"  # Simple list items
-        formatted_output += "</ul>"  # Close the unordered list
-    return formatted_output
+                formatted_output += f"<li>{item}</li>"
+        formatted_output += "</ul>"
+        return formatted_output
+    elif isinstance(agent_response, (int, float, str)): # Format simple types
+        return str(agent_response)  # Convert to string for display
+    else: #Handles other types like None, boolean, etc.
+        return str(agent_response) # Convert to string for display
+
 
 st.title("Chatbot")
 st.text_area("Enter your prompt:",height=150,key="prompt")
