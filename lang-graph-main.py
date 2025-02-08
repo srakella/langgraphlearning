@@ -44,13 +44,17 @@ def reset_conversation():
     st.session_state.prompt=""
     st.session_state.conversation_history=[]    
 
-def format_agent_response(agent_response_json):
-    """Formats a JSON agent response for display in Streamlit."""
+def format_agent_response(agent_response):  # No need for agent_response_json
+    """Formats the agent response for display in Streamlit. Handles both JSON strings and Python dictionaries."""
 
-    try:
-        agent_response = json.loads(agent_response_json)  # Parse the JSON string
-    except json.JSONDecodeError:
-        return "Invalid JSON response from agent."  # Handle parsing errors
+    if isinstance(agent_response, str): # Check if it is a JSON string
+        try:
+            agent_response = json.loads(agent_response)  # Parse the JSON string
+        except json.JSONDecodeError:
+            return "Invalid JSON response from agent."  # Handle parsing errors
+    elif not isinstance(agent_response, dict) and not isinstance(agent_response, list): # If not a dictionary or list, convert to string
+        return str(agent_response) # Default to string conversion
+    #If it is already a dictionary, we skip the json.loads()
 
     formatted_output = ""
 
@@ -61,17 +65,13 @@ def format_agent_response(agent_response_json):
         formatted_output += "<ul>"  # Start an unordered list
         for item in agent_response:
             if isinstance(item, dict):
-                formatted_output += "<li>" # Start a list item
+                formatted_output += "<li>"  # Start a list item
                 for key, value in item.items():
                     formatted_output += f"<strong>{key}:</strong> {value}<br>"
-                formatted_output += "</li>" # Close a list item
+                formatted_output += "</li>"  # Close a list item
             else:
                 formatted_output += f"<li>{item}</li>"  # Simple list items
         formatted_output += "</ul>"  # Close the unordered list
-
-    else:
-        formatted_output = str(agent_response)  # Default to string conversion
-
     return formatted_output
 
 st.title("Chatbot")
