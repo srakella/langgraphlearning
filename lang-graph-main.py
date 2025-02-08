@@ -58,8 +58,8 @@ with col1:
                     project_agent = ProjectAssignmentAgent(groq_api_key,project_context)
                     #agent_response = user_input
                     agent_response = project_agent.process_prompt(user_input)
-                    user_response = project_agent.generate_user_response(agent_response)
-                    st.write(f"Assistent: {user_response}")
+                   
+                    st.write(f"Assistant: {agent_response}")
             else:    
                 with st.spinner("Processing..."):
                     with response_container:
